@@ -1,5 +1,7 @@
 package com.impact.credopayment;
 
+import android.util.Log;
+
 import com.impact.credopayment.Api.JSONSchema.InitiateSchema;
 import com.impact.credopayment.Api.JSONSchema.ThirdPartySchema;
 import com.impact.credopayment.Api.JSONSchema.VerifyCardSchema;
@@ -45,7 +47,15 @@ public class Transactions {
         call.enqueue(new Callback<InitiateSchema>() {
             @Override
             public void onResponse(Call<InitiateSchema> call, Response<InitiateSchema> response) {
-                customCallback.onSuccess(response.body());
+                InitiateSchema initiateSchema = response.body();
+                if(!response.isSuccessful()){
+                    initiateSchema = new InitiateSchema();
+                    initiateSchema.setStatus(response.code()+"");
+                    initiateSchema.setPath("/v1/payments/initiate");
+                }/*else{
+                     initiateSchema = response.body();
+                }*/
+                customCallback.onSuccess(initiateSchema);
             }
 
             @Override
@@ -64,7 +74,17 @@ public class Transactions {
         call.enqueue(new Callback<VerifySchema>() {
             @Override
             public void onResponse(Call<VerifySchema> call, Response<VerifySchema> response) {
-                verifyCallBack.onSuccess(response.body());
+                VerifySchema verifySchema = response.body();
+                if(!response.isSuccessful()){
+                    verifySchema= new VerifySchema();
+                    verifySchema.setStatus(response.code()+"");
+                    Log.d("NAKDDLKDFKDKFJ", response.code()+"");
+                }/*else{
+                    verifySchema = response.body();
+                    verifySchema.setStatus(response.code()+"");
+                    Log.d("SUCCESS MESSAGE", response.code()+"");
+                }*/
+                verifyCallBack.onSuccess(verifySchema);
             }
 
             @Override
@@ -92,7 +112,14 @@ public class Transactions {
         call.enqueue(new Callback<ThirdPartySchema>() {
             @Override
             public void onResponse(Call<ThirdPartySchema> call, Response<ThirdPartySchema> response) {
-                thirdPartyCallBack.onSuccess(response.body());
+                ThirdPartySchema thirdPartySchema;
+                if(!response.isSuccessful()){
+                    thirdPartySchema = new ThirdPartySchema();
+                    thirdPartySchema.setStatus(response.code() + "");
+                }else{
+                    thirdPartySchema = response.body();
+                }
+                thirdPartyCallBack.onSuccess(thirdPartySchema);
             }
 
             @Override
@@ -113,7 +140,14 @@ public class Transactions {
         call.enqueue(new Callback<VerifyCardSchema>() {
             @Override
             public void onResponse(Call<VerifyCardSchema> call, Response<VerifyCardSchema> response) {
-                verifyCardCallBack.onSuccess(response.body());
+                VerifyCardSchema verifyCardSchema;
+                if(!response.isSuccessful()){
+                    verifyCardSchema = new VerifyCardSchema();
+                    verifyCardSchema.setStatus(response.code()+ "");
+                }else{
+                    verifyCardSchema = response.body();
+                }
+                verifyCardCallBack.onSuccess(verifyCardSchema);
             }
 
             @Override
@@ -140,7 +174,14 @@ public class Transactions {
         call.enqueue(new Callback<VerifyCardSchema>() {
             @Override
             public void onResponse(Call<VerifyCardSchema> call, Response<VerifyCardSchema> response) {
-                verifyCardCallBack.onSuccess(response.body());
+                VerifyCardSchema verifyCardSchema;
+                if(!response.isSuccessful()){
+                    verifyCardSchema = new VerifyCardSchema();
+                    verifyCardSchema.setStatus(response.code() + "");
+                }else{
+                    verifyCardSchema = response.body();
+                }
+                verifyCardCallBack.onSuccess(verifyCardSchema);
             }
 
             @Override
