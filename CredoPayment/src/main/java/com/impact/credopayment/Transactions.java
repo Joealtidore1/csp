@@ -1,5 +1,6 @@
 package com.impact.credopayment;
 
+import android.util.ArrayMap;
 import android.util.Log;
 
 import com.impact.credopayment.Api.JSONSchema.InitiateSchema;
@@ -8,13 +9,21 @@ import com.impact.credopayment.Api.JSONSchema.VerifyCardSchema;
 import com.impact.credopayment.Api.JSONSchema.VerifySchema;
 import com.impact.credopayment.Api.Services.ApiClient;
 
+import org.json.JSONObject;
+
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 public class Transactions {
 
@@ -43,7 +52,7 @@ public class Transactions {
      */
     public  void initiatePayment(Double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerName, String customerEmail, String customerPhone, InitiatePaymentCallBack customCallback){
 
-        Call<InitiateSchema> call = apiClient.getApi().initiatePayment(publicKey, amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone);
+        Call<InitiateSchema> call = apiClient.getApi().initiatePayment(publicKey, body(amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone));
         call.enqueue(new Callback<InitiateSchema>() {
             @Override
             public void onResponse(Call<InitiateSchema> call, Response<InitiateSchema> response) {
@@ -189,6 +198,21 @@ public class Transactions {
                 verifyCardCallBack.onFailure(t);
             }
         });
+    }
+
+    public RequestBody body(double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerEmail, String customerName, String customerPhoneNo){
+        Map<String, Object> jsonBody = new ArrayMap<>();
+        jsonBody.put("amount", amount);
+        jsonBody.put("currency", currency);
+        jsonBody.put("redirectUrl", redirectUrl);
+        jsonBody.put("transRef", transRef);
+        jsonBody.put("paymentOptions", paymentOptions);
+        jsonBody.put("customerEmail", customerEmail);
+        jsonBody.put("customerName", customerName);
+        jsonBody.put("customerPhoneNo", customerPhoneNo);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
+        return requestBody;
     }
 
 

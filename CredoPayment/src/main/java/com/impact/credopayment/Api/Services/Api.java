@@ -5,28 +5,24 @@ import com.impact.credopayment.Api.JSONSchema.ThirdPartySchema;
 import com.impact.credopayment.Api.JSONSchema.VerifyCardSchema;
 import com.impact.credopayment.Api.JSONSchema.VerifySchema;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface Api {
 
+    @Headers({"Accept:application/json", "Content-Type:application/json;"})
     @POST("payments/initiate")
-    @FormUrlEncoded
     public Call<InitiateSchema> initiatePayment(
             @Header("Authorization") String publicKey,
-            @Field("amount") double amount,
-            @Field("currency") String currency,
-            @Field("redirectUrl") String redirectUrl,
-            @Field("transRef") String transRef,
-            @Field("paymentOptions") String paymentOptions,
-            @Field("customerEmail") String customerEmail,
-            @Field("customerName") String customerName,
-            @Field("customerPhone") String customerPhone
+            @Body RequestBody body
 
     );
 
@@ -51,7 +47,7 @@ public interface Api {
             @Field("customerPhone") String customerPhone
     );
 
-    @POST("/payments/card/third-party/3ds-verify-card-number")
+    @POST("payments/card/third-party/3ds-verify-card-number")
     @FormUrlEncoded
     public Call<VerifyCardSchema> verifyCardNumber(
             @Header("Authorization") String secretKey,
@@ -60,7 +56,7 @@ public interface Api {
     );
 
     @FormUrlEncoded
-    @POST("/payments/card/third-party/3ds-pay")
+    @POST("payments/card/third-party/3ds-pay")
     public Call<VerifyCardSchema> payThreeDs(
             @Header("Authorization") String secretKey,
             @Field("amount") double amount,

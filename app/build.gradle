@@ -38,5 +38,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //Dependency for Credo Payment
-    implementation 'com.github.Joealtidore1:Credo-Payment:1.0.1'
+    implementation 'com.github.Joealtidore1:Credo-Payment:1.1.0'
 }
