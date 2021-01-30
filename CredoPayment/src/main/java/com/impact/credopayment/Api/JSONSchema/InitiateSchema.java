@@ -5,10 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class InitiateSchema implements Serializable {
+public class InitiateSchema extends ApiResponse implements Serializable {
     @SerializedName("paymentLink")
     @Expose
     String paymentLink;
+<<<<<<< HEAD
 
     @SerializedName("status")
     @Expose
@@ -80,6 +81,8 @@ public class InitiateSchema implements Serializable {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+=======
+>>>>>>> e9c9281a985a65de261a94679d7512db679a63dc
 
     public String getPaymentLink() {
         return paymentLink;

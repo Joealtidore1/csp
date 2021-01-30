@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/securedBy"
+        android:text="Secured by"
+        android:textSize="36sp"
+        android:textColor="#fff"/>
+
+    <ImageView
+        android:id="@+id/imV"
+        android:layout_width="64dp"
+        android:layout_height="27.253dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/credo"
+        android:layout_toEndOf="@+id/securedBy"
+        android:layout_marginStart="3dp"/>
+
+</RelativeLayout>
