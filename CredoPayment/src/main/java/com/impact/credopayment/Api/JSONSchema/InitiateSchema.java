@@ -10,6 +10,7 @@ public class InitiateSchema extends ApiResponse implements Serializable {
     @Expose
     String paymentLink;
 
+
     public String getPaymentLink() {
         return paymentLink;
     }

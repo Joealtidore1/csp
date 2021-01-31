@@ -52,7 +52,7 @@ public class Transactions {
      */
     public  void initiatePayment(Double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerName, String customerEmail, String customerPhone, InitiatePaymentCallBack customCallback){
 
-        Call<InitiateSchema> call = apiClient.getApi().initiatePayment(publicKey, body(amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone));
+        Call<InitiateSchema> call = apiClient.getApi().initiatePayment(publicKey, initiatePaymentBody(amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone));
         call.enqueue(new Callback<InitiateSchema>() {
             @Override
             public void onResponse(Call<InitiateSchema> call, Response<InitiateSchema> response) {
@@ -117,7 +117,7 @@ public class Transactions {
      * @param thirdPartyCallBack the callback object to return response to user
      */
     public void thirdPartyPay(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone, ThirdPartyCallBack thirdPartyCallBack){
-        Call<ThirdPartySchema> call = apiClient.getApi().thirdPartyPay(secretKey, orderAmount, currency, cardNumber, expiryMonth, expiryYear, securityCode, transRef, customerEmail, customerName, customerPhone);
+        Call<ThirdPartySchema> call = apiClient.getApi().thirdPartyPay(secretKey, thirdPartyPayBody(orderAmount, currency, cardNumber, expiryMonth, expiryYear, securityCode, transRef, customerEmail, customerName, customerPhone));
         call.enqueue(new Callback<ThirdPartySchema>() {
             @Override
             public void onResponse(Call<ThirdPartySchema> call, Response<ThirdPartySchema> response) {
@@ -145,7 +145,7 @@ public class Transactions {
      * @param verifyCardCallBack the callback object to get response for user
      */
     public void verifyCardNumber(String cardNumber, String orderCurrency, VerifyCardCallBack verifyCardCallBack){
-        Call<VerifyCardSchema> call = apiClient.getApi().verifyCardNumber(secretKey, cardNumber, orderCurrency);
+        Call<VerifyCardSchema> call = apiClient.getApi().verifyCardNumber(secretKey, verifyCardNumberBody(cardNumber, orderCurrency));
         call.enqueue(new Callback<VerifyCardSchema>() {
             @Override
             public void onResponse(Call<VerifyCardSchema> call, Response<VerifyCardSchema> response) {
@@ -179,7 +179,7 @@ public class Transactions {
      * @param verifyCardCallBack
      */
     public void payThreeDs(double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerEmail, String customerName, String customerPhone, VerifyCardCallBack verifyCardCallBack){
-        Call<VerifyCardSchema> call = apiClient.getApi().payThreeDs(secretKey, amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone);
+        Call<VerifyCardSchema> call = apiClient.getApi().payThreeDs(secretKey, payThreeDsBody(amount, currency, redirectUrl, transRef, paymentOptions, customerEmail, customerName, customerPhone));
         call.enqueue(new Callback<VerifyCardSchema>() {
             @Override
             public void onResponse(Call<VerifyCardSchema> call, Response<VerifyCardSchema> response) {
@@ -200,7 +200,7 @@ public class Transactions {
         });
     }
 
-    public RequestBody body(double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerEmail, String customerName, String customerPhoneNo){
+    public RequestBody initiatePaymentBody(double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerEmail, String customerName, String customerPhoneNo){
         Map<String, Object> jsonBody = new ArrayMap<>();
         jsonBody.put("amount", amount);
         jsonBody.put("currency", currency);
@@ -213,6 +213,48 @@ public class Transactions {
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
         return requestBody;
+    }
+
+    public RequestBody verifyCardNumberBody(String cardNumber, String orderCurrency){
+
+        Map<String, Object> jsonBody = new ArrayMap<>();
+        jsonBody.put("cardNumber", cardNumber);
+        jsonBody.put("orderCurrency", orderCurrency);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
+        return requestBody;
+    }
+
+    public RequestBody payThreeDsBody(double amount, String currency, String redirectUrl, String transRef, String paymentOptions, String customerEmail, String customerName, String customerPhoneNo){
+        Map<String, Object> jsonBody = new ArrayMap<>();
+        jsonBody.put("amount", amount);
+        jsonBody.put("currency", currency);
+        jsonBody.put("redirectUrl", redirectUrl);
+        jsonBody.put("transRef", transRef);
+        jsonBody.put("paymentOptions", paymentOptions);
+        jsonBody.put("customerEmail", customerEmail);
+        jsonBody.put("customerName", customerName);
+        jsonBody.put("customerPhoneNo", customerPhoneNo);
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
+        return requestBody;
+    }
+
+    public RequestBody thirdPartyPayBody(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone){
+        Map<String, Object> jsonBody = new ArrayMap<>();
+        jsonBody.put("orderAmount", orderAmount);
+        jsonBody.put("orderCurrency", currency);
+        jsonBody.put("cardNumber", cardNumber);
+        jsonBody.put("expiryMonth", expiryMonth);
+        jsonBody.put("expiryYear", expiryYear);
+        jsonBody.put("securityCode", securityCode);
+        jsonBody.put("transRef", transRef);
+        jsonBody.put("customerEmail", customerEmail);
+        jsonBody.put("customerName", customerName);
+        jsonBody.put("customerPhoneNo", customerPhone);
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
+        return body;
     }
 
 

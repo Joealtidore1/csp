@@ -31,42 +31,26 @@ public interface Api {
             @Header("Authorization") String secretKey,
             @Path(value = "transRef", encoded = true) String transRef);
 
+    @Headers({"Accept:application/json", "Content-Type:application/json;"})
     @POST("payments/card/third-party/pay")
     @FormUrlEncoded
     public Call<ThirdPartySchema> thirdPartyPay(
             @Header("Authorization") String secretKey,
-            @Field("orderAmount") Double orderAmount,
-            @Field("orderCurrency") String currency,
-            @Field("cardNumber") String cardNumber,
-            @Field("expiryMonth") String expiryMonth,
-            @Field("expiryYear") String expiryYear,
-            @Field("securityCode") String securityCode,
-            @Field("transRef") String transRef,
-            @Field("customerEmail") String customerEmail,
-            @Field("customerName") String customerName,
-            @Field("customerPhone") String customerPhone
+            @Body  RequestBody body
     );
 
+    @Headers({"Accept:application/json", "Content-Type:application/json;"})
     @POST("payments/card/third-party/3ds-verify-card-number")
-    @FormUrlEncoded
     public Call<VerifyCardSchema> verifyCardNumber(
             @Header("Authorization") String secretKey,
-            @Field("cardNumber") String cardNumber,
-            @Field("orderCurrency") String orderCurrency
+            @Body RequestBody requestBody
     );
 
-    @FormUrlEncoded
+    @Headers({"Accept:application/json", "Content-Type:application/json;"})
     @POST("payments/card/third-party/3ds-pay")
     public Call<VerifyCardSchema> payThreeDs(
             @Header("Authorization") String secretKey,
-            @Field("amount") double amount,
-            @Field("currency") String currency,
-            @Field("redirectUrl") String redirectUrl,
-            @Field("transRef") String transRef,
-            @Field("paymentOptions") String paymentOptions,
-            @Field("customerEmail") String customerEmail,
-            @Field("customerName") String customerName,
-            @Field("customerPhone") String customerPhone
+            @Body RequestBody body
     );
 
 }
