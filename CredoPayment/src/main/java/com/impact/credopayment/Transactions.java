@@ -116,8 +116,8 @@ public class Transactions {
      * @param customerPhone The phone number of customer performing the transaction
      * @param thirdPartyCallBack the callback object to return response to user
      */
-    public void thirdPartyPay(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone, ThirdPartyCallBack thirdPartyCallBack){
-        Call<ThirdPartySchema> call = apiClient.getApi().thirdPartyPay(secretKey, thirdPartyPayBody(orderAmount, currency, cardNumber, expiryMonth, expiryYear, securityCode, transRef, customerEmail, customerName, customerPhone));
+    public void thirdPartyPay(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone, String paymentSlug, ThirdPartyCallBack thirdPartyCallBack){
+        Call<ThirdPartySchema> call = apiClient.getApi().thirdPartyPay(secretKey, thirdPartyPayBody(orderAmount, currency, cardNumber, expiryMonth, expiryYear, securityCode, transRef, customerEmail, customerName, customerPhone, paymentSlug));
         call.enqueue(new Callback<ThirdPartySchema>() {
             @Override
             public void onResponse(Call<ThirdPartySchema> call, Response<ThirdPartySchema> response) {
@@ -144,8 +144,8 @@ public class Transactions {
      * @param orderCurrency the currency used for the order
      * @param verifyCardCallBack the callback object to get response for user
      */
-    public void verifyCardNumber(String cardNumber, String orderCurrency, VerifyCardCallBack verifyCardCallBack){
-        Call<VerifyCardSchema> call = apiClient.getApi().verifyCardNumber(secretKey, verifyCardNumberBody(cardNumber, orderCurrency));
+    public void verifyCardNumber(String cardNumber, String orderCurrency, String paymentSlug, VerifyCardCallBack verifyCardCallBack){
+        Call<VerifyCardSchema> call = apiClient.getApi().verifyCardNumber(secretKey, verifyCardNumberBody(cardNumber, orderCurrency, paymentSlug));
         call.enqueue(new Callback<VerifyCardSchema>() {
             @Override
             public void onResponse(Call<VerifyCardSchema> call, Response<VerifyCardSchema> response) {
@@ -215,11 +215,12 @@ public class Transactions {
         return requestBody;
     }
 
-    public RequestBody verifyCardNumberBody(String cardNumber, String orderCurrency){
+    public RequestBody verifyCardNumberBody(String cardNumber, String orderCurrency, String paymentSlug){
 
         Map<String, Object> jsonBody = new ArrayMap<>();
         jsonBody.put("cardNumber", cardNumber);
         jsonBody.put("orderCurrency", orderCurrency);
+        jsonBody.put("paymentSlug", paymentSlug);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
         return requestBody;
@@ -240,7 +241,7 @@ public class Transactions {
         return requestBody;
     }
 
-    public RequestBody thirdPartyPayBody(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone){
+    public RequestBody thirdPartyPayBody(Double orderAmount, String currency, String cardNumber, String expiryMonth, String expiryYear, String securityCode, String transRef, String customerEmail, String customerName, String customerPhone, String paymentSlug){
         Map<String, Object> jsonBody = new ArrayMap<>();
         jsonBody.put("orderAmount", orderAmount);
         jsonBody.put("orderCurrency", currency);
@@ -252,6 +253,7 @@ public class Transactions {
         jsonBody.put("customerEmail", customerEmail);
         jsonBody.put("customerName", customerName);
         jsonBody.put("customerPhoneNo", customerPhone);
+        jsonBody.put("paymentSlug", paymentSlug);
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), (new JSONObject(jsonBody)).toString());
         return body;
