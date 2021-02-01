@@ -9,6 +9,18 @@ public class InitiateSchema extends ApiResponse implements Serializable {
     @SerializedName("paymentLink")
     @Expose
     String paymentLink;
+    
+    @SerializedName("paymentSlug")
+    @Expose
+    String paymentSlug;
+
+    public String getPaymentSlug() {
+        return paymentSlug;
+    }
+
+    public void setPaymentSlug(String paymentSlug) {
+        this.paymentSlug = paymentSlug;
+    }
 
 
     public String getPaymentLink() {
